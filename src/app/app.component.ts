@@ -39,7 +39,7 @@ export class AppComponent {
       if (!isAuth && this.previousAuthState !== isAuth) {
         this.router.navigateByUrl('/login');
 
-        
+
       }
       this.previousAuthState = isAuth;
     });

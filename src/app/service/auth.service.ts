@@ -79,7 +79,7 @@ export class AuthService implements OnDestroy {
     private http: HttpClient) { }
     
     //server: string = 'https://fatigue-covid.univ-st-etienne.fr/server_api/';
-    server: string = 'https://selfit.univ-st-etienne.fr/trainimm/server_api/';
+    server: string = 'https://trainimm.univ-st-etienne.fr/server_api/';
     //server : string = 'http://localhost/TRAINIMM_V2/server_api/';
     //server: string = 'https://www.beyondthecourt.fr/server_api/';
 
@@ -101,6 +101,7 @@ console.log('here');
       console.log('autologin');
       return from(Plugins.Storage.get({ key: 'authData' })).pipe(
         map(storedData => {
+          
           if (!storedData || !storedData.value) {
             return null;
           }

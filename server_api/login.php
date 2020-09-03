@@ -24,6 +24,7 @@ if($postjson['aksi'] == "login") {
 ");
 $check = mysqli_num_rows($query);
 
+
 if($check>0){
   $data = mysqli_fetch_array($query);
   $datauser = array(
@@ -33,6 +34,14 @@ if($check>0){
     'expiration' => '172800',
     'token' => strval(rand())
   );
+
+  // if($postjson['stravaCode']) {
+  //   $queryStrava = mysqli_query($mysqli, "INSERT INTO STRAVA SET
+  //   user_id = '$data[user_id]',
+  //   code = '$postjson[stravaCode]'
+  
+  // ");
+  // }
 
   if($query) $result = json_encode(array('success' =>true, 'result'=>$datauser));
   else $result = json_encode(array('success' => false, 'msg'=>'error, please try again'));

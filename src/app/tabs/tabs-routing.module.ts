@@ -24,6 +24,10 @@ const routes: Routes = [
         loadChildren: () => import('../parametres/parametres.module').then(m => m.ParametresPageModule)
       },
       {
+        path: 'activites',
+        loadChildren: () => import('../activites/activites.module').then(m => m.ActivitesPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full'

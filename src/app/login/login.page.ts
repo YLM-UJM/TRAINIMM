@@ -9,6 +9,7 @@ import { LoadingController, AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Plugins } from '@capacitor/core';
 import { SurveyService } from '../service/survey.service';
+import { JsonPipe } from '@angular/common';
 
 
 
@@ -38,6 +39,10 @@ private opt: string = 'signin';
 login = true;
 register = false;
 intro = false;
+user_id;
+server;
+stravaCode= '';
+body = {};
 
 
 
@@ -53,6 +58,12 @@ intro = false;
     private alertCtrl: AlertController,
     private surveyService: SurveyService) { 
 
+      this.authService.userId.subscribe(resData => {
+        this.user_id = resData;
+        //console.log(this.user_id);
+    });
+    this.server = this.authService.server;
+
       // Plugins.Storage.get({key: 'tutoComplete'}).then(val => {
       //   if (val.value == null) {
       //     Plugins.Storage.set({key: 'tutoComplete',value : 'true'});
@@ -65,11 +76,30 @@ intro = false;
 
   ngOnInit() {
 
+    // Plugins.Storage.get({ key: 'authData' }).then( res => {
+    //   console.log(res);
+    //   if (res.value){
+    //     return this.authService.autoLogin();
+    //   }
+    // })
+
     // Plugins.Storage.get({key : "TestCookie"}).then(val => {
     //   console.log(val);
     // })
     let urlParams = new URLSearchParams(window.location.search);
     let myParam = urlParams.get('email');
+    // this.stravaCode = urlParams.get('code');
+    // if (this.stravaCode != '') {
+    //   console.log(this.stravaCode);
+    //   let body = {
+    //     code: this.stravaCode,
+    //     aski: 'saveStravaCode'
+    //   }
+    //   this.http.post(this.server + 'saveStrava.php',body).subscribe(resData=> {
+    //     console.log(resData);
+    //   })
+    // }
+
     //console.log(myParam);
     if (myParam) {
       let message = 'Votre compte a été vérifié, vous pouvez maintenant vous connecter.'
@@ -152,11 +182,13 @@ intro = false;
           });
         toast.present();
       };
-      let body = {
-        email: this.email,
-        password: this.password,
-        aksi: 'login'
-      };
+        this.body = {
+          email: this.email,
+          password: this.password,
+          aksi: 'login'
+        };
+
+
       this.isLoading = true;
       this.loadingCtrl
         .create({ keyboardClose: true, message: 'Logging in...' })
@@ -164,7 +196,8 @@ intro = false;
           loadingEl.present();
           let authObs: Observable<AuthResponseData>;
           if (this.isLogin) {
-            authObs = this.authService.login(body);
+            authObs = this.authService.login(this.body);
+            console.log(this.body);
           } else {
             // authObs = this.authService.signup(email, password);
           }
